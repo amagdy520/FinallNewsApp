@@ -22,7 +22,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     private TextView mEmptyStateTextView;
     private static final int NEWS_LOADER_ID = 1;
-    private static final String USGS_REQUEST_URL = "http://content.guardianapis.com/search?q=debates&section=politics&show-tags=contributor&api-key=test";
+    private static final String USGS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
     private NewsAdapter mAdapter;
     public static final String LOG_TAG = NewsActivity.class.getName();
 

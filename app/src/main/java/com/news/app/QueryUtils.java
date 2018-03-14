@@ -60,10 +60,11 @@ public final class QueryUtils {
                 String title = currentNews.getString("sectionName");
                 String information = currentNews.getString("webTitle");
                 String time = currentNews.getString("webPublicationDate");
+                String author = "";
 
                 // Extract the value for the key called "url"
                 String url = currentNews.getString("webUrl");
-                News news = new News(title, information, time, url);
+                News news = new News(title, information, time, url, author);
                 newses.add(news);
             }
 
