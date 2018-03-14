@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by ahmed150236 on 22-Feb-18.
+ * Created by Ahmed Magdy on 22-Feb-18.
  */
 
 public class NewsAdapter extends ArrayAdapter<News> {

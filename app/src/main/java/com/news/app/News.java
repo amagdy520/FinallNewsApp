@@ -1,7 +1,7 @@
 package com.news.app;
 
 /**
- * Created by ahmed150236 on 22-Feb-18.
+ * Created by Ahmed Magdy on 22-Feb-18.
  */
 
 public class News {
