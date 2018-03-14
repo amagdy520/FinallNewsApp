@@ -1,40 +1,43 @@
 package com.news.app;
 
 /**
- * Created by Ahmed Magdy on 22-Feb-18.
+ * Created by ahmed150236 on 22-Feb-18.
  */
 
 public class News {
 
-    private String mTitle;
+    private String title;
     private String mInformation;
-    private String mTime;
+    private String date;
     private String mUrl;
-    private String mAuthor;
+    private String mِAuthorName;
 
-    public News(String mTitle, String mInformation, String mTime, String mUrl, String mAuthor) {
-        this.mTitle = mTitle;
+    public News(String mTitle, String mInformation, String mِAuthorName, String mTime, String mUrl) {
+        this.title = mTitle;
         this.mInformation = mInformation;
-        this.mTime = mTime;
+        this.date = mTime;
         this.mUrl = mUrl;
-        this.mAuthor = mAuthor;
+        this.mِAuthorName = mِAuthorName;
     }
 
-    public String getmTitle() {
-        return mTitle;
+    public String getTitle() {
+        return title;
     }
 
     public String getmInformation() {
         return mInformation;
     }
 
-    public String getmTime() {
-        return mTime;
+    public String getDate() {
+        return date;
     }
 
     public String getmUrl() {
         return mUrl;
     }
 
-    public String getmAuthor(){ return mAuthor; }
+    public String getAuthorName() {
+        return mِAuthorName;
+    }
+
 }

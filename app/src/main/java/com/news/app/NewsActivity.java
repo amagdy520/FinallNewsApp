@@ -5,11 +5,15 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,7 +26,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     private TextView mEmptyStateTextView;
     private static final int NEWS_LOADER_ID = 1;
-    private static final String USGS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
+    private static final String USGS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate";
     private NewsAdapter mAdapter;
     public static final String LOG_TAG = NewsActivity.class.getName();
 
@@ -30,7 +34,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-
 
         // Find a reference to the {@link ListView} in the layout
         ListView newsListView = (ListView) findViewById(R.id.list);
@@ -48,11 +51,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // Find the current earthquake that was clicked on
-                News currentEarthquake = mAdapter.getItem(i);
+
+                News currentNews = mAdapter.getItem(i);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
-                Uri newsUri = Uri.parse(currentEarthquake.getmUrl());
+                Uri newsUri = Uri.parse(currentNews.getmUrl());
 
                 // Create a new intent to view the earthquake URI
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
@@ -91,7 +94,25 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
-        return new NewsLoader(this, USGS_REQUEST_URL);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_newest_value));
+
+        String sectionType = sharedPrefs.getString(
+                getString(R.string.settings_section_type_key),
+                getString(R.string.settings_section_type_sport_value));
+
+        Uri uri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = uri.buildUpon();
+        if (!sectionType.isEmpty()) {
+            uriBuilder.appendQueryParameter("section", sectionType);
+            uriBuilder.appendQueryParameter("order-by", orderBy);
+            uriBuilder.appendQueryParameter("show-tags", "contributor");
+            uriBuilder.appendQueryParameter("api-key", "test");
+        }
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -118,5 +139,21 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     public void onLoaderReset(Loader<List<News>> loader) {
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -26,7 +26,6 @@ import static com.news.app.NewsActivity.LOG_TAG;
 
 public final class QueryUtils {
 
-
     private QueryUtils() {
     }
 
@@ -49,9 +48,6 @@ public final class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
 
             JSONObject Baseobject = baseJsonResponse.getJSONObject("response");
-
-            // Extract the JSONArray associated with the key called "features",
-            // which represents a list of features (or earthquakes).
             JSONArray newsArray = Baseobject.getJSONArray("results");
 
             for (int i = 0; i < newsArray.length(); i++) {
@@ -59,16 +55,21 @@ public final class QueryUtils {
                 JSONObject currentNews = newsArray.getJSONObject(i);
                 String title = currentNews.getString("sectionName");
                 String information = currentNews.getString("webTitle");
-                String time = currentNews.getString("webPublicationDate");
-                String author = "";
-
+                String date = currentNews.getString("webPublicationDate");
                 // Extract the value for the key called "url"
                 String url = currentNews.getString("webUrl");
-                News news = new News(title, information, time, url, author);
+
+                String authorName = "";
+                JSONArray jsonTagsArray = currentNews.optJSONArray("tags");
+                if (!jsonTagsArray.isNull(0)) {
+                    JSONObject jsonTagsObject = jsonTagsArray.getJSONObject(0);
+                    if (!jsonTagsObject.isNull("webTitle"))
+                        authorName = jsonTagsObject.getString("webTitle");
+                }
+
+                News news = new News(title, information, authorName, date, url);
                 newses.add(news);
             }
-
-
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message

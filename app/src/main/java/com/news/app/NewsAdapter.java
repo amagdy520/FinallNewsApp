@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Ahmed Magdy on 22-Feb-18.
+ * Created by ahmed150236 on 22-Feb-18.
  */
 
 public class NewsAdapter extends ArrayAdapter<News> {
@@ -37,21 +37,19 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         // Find the TextView with view ID title
         TextView titleView = (TextView) listItemView.findViewById(R.id.title_text_view);
-        titleView.setText(currentNews.getmTitle());
+        titleView.setText(currentNews.getTitle());
 
         // Find the TextView with view ID information
         TextView informationView = (TextView) listItemView.findViewById(R.id.informations);
         informationView.setText(currentNews.getmInformation());
 
-
-        // Find the TextView with view ID Data
+        // Find the TextView with view ID date
         TextView dateView = (TextView) listItemView.findViewById(R.id.date);
-        dateView.setText("Date " + currentNews.getmTime());
+        dateView.setText(currentNews.getDate());
 
-
-        // Find the TextView with view ID Author
-        TextView authorView = (TextView) listItemView.findViewById(R.id.author);
-        authorView.setText(currentNews.getmAuthor());
+        // Find the TextView with view ID authorName
+        TextView authorNameView = (TextView) listItemView.findViewById(R.id.authorName);
+        authorNameView.setText(currentNews.getAuthorName());
 
         return listItemView;
 
